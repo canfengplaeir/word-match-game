@@ -1,0 +1,30 @@
+{
+  "name": "word-match-game",
+  "version": "1.0.0",
+  "description": "单词连连看小游戏",
+  "main": "",
+  "scripts": {
+    "dev": "cross-env TAILWIND_MODE=watch NODE_ENV=development postcss ./app/static/src/css/tailwind.css -o ./app/static/dist/css/main.css -w",
+    "build:prod": "cross-env TAILWIND_MODE=build NODE_ENV=production postcss ./app/static/src/css/tailwind.css -o ./app/static/dist/css/main.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canfengplaeir/word-match-game.git"
+  },
+  "author": "Amrinder Dhindsa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/canfengplaeir/word-match-game/issues"
+  },
+  "homepage": "https://github.com/canfengplaeir/word-match-game#readme",
+  "devDependencies": {
+    "@tailwindcss/jit": "^0.1.18",
+    "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
+    "cssnano": "^7.0.6",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.11"
+  },
+  "dependencies": {}
+}
