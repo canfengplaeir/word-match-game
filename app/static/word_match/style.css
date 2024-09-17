@@ -1,0 +1,349 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #4caf50, #43a047);
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.container {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 1200px;
+}
+
+.title-box {
+  text-align: center;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.title-box:hover {
+  background-color: rgba(135, 206, 235, 0.3);
+}
+
+.title-box h1 {
+  font-size: 2.5em;
+  color: #fff;
+  margin: 0;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title-box .arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 1.5em;
+  transition: transform 0.3s;
+}
+
+.title-box:hover .arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+#scoreboard {
+  margin-bottom: 30px;
+  font-size: 1.2em;
+  color: #fff;
+  display: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  transition: background-color 0.3s;
+}
+
+#scoreboard p {
+  margin: 10px 0;
+}
+
+#gameBoard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+  gap: 20px;
+  justify-content: center;
+  align-content: start;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.block {
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #555;
+  word-break: break-all;
+  text-wrap: balance;
+  font-size: 1.2em;
+}
+
+.block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ui-draggable-dragging {
+  z-index: 10000 !important;
+}
+
+.disappearing {
+  animation: disappear 0.5s forwards;
+}
+
+@keyframes disappear {
+  to {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+}
+
+.selected {
+  background-color: #ffeb3b;
+  border: 2px solid #ffc107;
+}
+
+#gameOver {
+  display: none;
+  margin-top: 30px;
+  border-radius: 15px;
+  padding: 20px;
+  transition: background-color 0.3s;
+}
+
+#gameOver:hover {
+  background-color: rgba(135, 206, 235, 0.3);
+}
+
+#gameOver h2 {
+  color: #ffd700;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+  background-color: #43a047;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button:active {
+  background-color: #388e3c;
+  transform: translateY(1px);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.file-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-list li {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.file-list li:hover {
+  background-color: #f5f5f5;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+#floatingWindowLeft,
+#floatingWindowRight {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#floatingWindowLeft {
+  left: -220px;
+}
+
+#floatingWindowRight {
+  right: -220px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#floatingWindowLeft:hover,
+#floatingWindowRight:hover {
+  transform: translateY(-50%) translateX(30px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#floatingWindowRight:hover {
+  transform: translateY(-50%) translateX(-30px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#floatingWindowLeft.expanded,
+#floatingWindowRight.expanded {
+  transform: translateY(-50%) translateX(220px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#floatingWindowRight.expanded {
+  transform: translateY(-50%) translateX(-220px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#floatingWindowLeft .content,
+#floatingWindowRight .content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#floatingWindowLeft .scoreboard,
+#floatingWindowRight .scoreboard {
+  padding: 10px;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+#floatingWindowLeft .scoreboard p,
+#floatingWindowRight .scoreboard p {
+  margin: 5px 0;
+}
+
+.floating-button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.floating-button:hover {
+  background-color: #43a047;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.floating-button:active {
+  background-color: #388e3c;
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes victoryAnimation {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.victory {
+  animation: victoryAnimation 1s ease-in-out;
+}

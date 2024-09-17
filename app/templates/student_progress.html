@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">{{ student }} 的学习进度</h1>
+
+<ul>
+    {% for p in progress %}
+    <li class="mb-2">
+        <span>{{ p.word.word }} - {{ p.word.meaning }}</span>
+        <input type="checkbox" class="ml-2 progress-checkbox" data-id="{{ p.id }}" {% if p.learned %}checked{% endif %}>
+        <span class="ml-2 {% if p.learned %}text-green-500{% else %}text-red-500{% endif %}">
+            {% if p.learned %}已学会{% else %}未学会{% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('teacher_dashboard') }}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">返回教师后台</a>
+
+<script>
+    $(document).ready(function() {
+        $('.progress-checkbox').on('change', function() {
+            const progressId = $(this).data('id');
+            const learned = $(this).prop('checked');
+            $.ajax({
+                url: '/update_progress',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({progress_id: progressId, learned: learned}),
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();  // 刷新页面以显示更新后的状态
+                    } else {
+                        alert('更新失败: ' + response.error);
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

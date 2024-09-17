@@ -1,0 +1,225 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+  background-color: #f8f9fa;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+th {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+tr {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+tr:hover td {
+  background-color: #e9ecef;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn {
+  background-color: #f44336;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.swap-btn {
+  background-color: #2196f3;
+}
+
+.swap-btn:hover {
+  background-color: #1976d2;
+}
+
+.batch-delete-btn {
+  background-color: #f44336;
+}
+
+.batch-delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.info {
+  background-color: #e7f3fe;
+  border-left: 5px solid #2196f3;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 5px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+#batchInput {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  /* 设置最大高度 */
+  overflow-y: auto;
+  /* 添加垂直滚动条 */
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+  display: flex;
+  justify-content: space-between;
+}
+
+.autocomplete-items .english {
+  font-weight: bold;
+}
+
+.autocomplete-items .chinese {
+  color: #666;
+}
+
+.autocomplete-active {
+  background-color: #e9ecef !important;
+  color: #495057;
+}
+
+.input-container {
+  position: relative;
+}
+
+#searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+}

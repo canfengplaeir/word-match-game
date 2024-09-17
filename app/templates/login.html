@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 我的应用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-base-200 flex items-center justify-center py-8">
+    <div class="card w-full max-w-md bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title justify-center text-2xl font-bold mb-6">登录</h2>
+            <form method="POST" action="" id="loginForm">
+                {{ form.hidden_tag() }}
+                <div class="form-control">
+                    <label for="email" class="label">
+                        <span class="label-text">电子邮箱</span>
+                    </label>
+                    {{ form.email(class="input input-bordered", placeholder="请输入电子邮箱", required=true) }}
+                    {% for error in form.email.errors %}
+                        <span class="text-error text-sm">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-4">
+                    <label for="password" class="label">
+                        <span class="label-text">密码</span>
+                    </label>
+                    <div class="relative">
+                        {{ form.password(class="input input-bordered pr-10", placeholder="请输入密码", required=true) }}
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center" aria-label="显示密码">
+                            <i data-lucide="eye" class="h-5 w-5 text-gray-500"></i>
+                        </button>
+                    </div>
+                    {% for error in form.password.errors %}
+                        <span class="text-error text-sm">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-4">
+                    <label class="cursor-pointer label justify-start">
+                        <input type="checkbox" id="remember" name="remember" class="checkbox checkbox-sm checkbox-primary mr-2" />
+                        <span class="label-text">记住我</span>
+                    </label>
+                </div>
+                <div class="form-control mt-6">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+            <div class="divider">或</div>
+            <div class="flex justify-center space-x-4">
+                <button class="btn btn-circle btn-outline" aria-label="使用GitHub登录">
+                    <i data-lucide="github" class="h-5 w-5"></i>
+                </button>
+                <button class="btn btn-circle btn-outline" aria-label="使用Twitter登录">
+                    <i data-lucide="twitter" class="h-5 w-5"></i>
+                </button>
+                <button class="btn btn-circle btn-outline" aria-label="使用Facebook登录">
+                    <i data-lucide="facebook" class="h-5 w-5"></i>
+                </button>
+            </div>
+            <div class="mt-4 text-center text-sm">
+                还没有账户？ <a href="/register" class="link link-primary">注册新账户</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化Lucide图标
+        lucide.createIcons();
+
+        // 切换密码可见性
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+                this.setAttribute('aria-label', '隐藏密码');
+            } else {
+                passwordInput.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+                this.setAttribute('aria-label', '显示密码');
+            }
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

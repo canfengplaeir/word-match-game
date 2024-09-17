@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师后台管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-white p-4">
+            <h1 class="text-2xl font-bold mb-6">教师后台</h1>
+            <nav>
+                <ul>
+                    <li class="mb-2">
+                        <a href="#" class="block p-2 hover:bg-gray-700 rounded" data-section="student-management">学生管理</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="block p-2 hover:bg-gray-700 rounded" data-section="file-management">文件管理</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="block p-2 hover:bg-gray-700 rounded" data-section="word-match">单词连连看</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 overflow-auto">
+            <!-- Student Management Section -->
+            <section id="student-management">
+                <h2 class="text-2xl font-bold mb-4">学生管理</h2>
+                <div class="mb-4">
+                    <h3 class="text-xl font-bold mb-2">上传学生名单</h3>
+                    <form id="upload-students-form" enctype="multipart/form-data">
+                        <input type="text" id="grade-input" name="grade" placeholder="输入年级" class="border rounded px-2 py-1 mr-2">
+                        <input type="text" id="class-input" name="class" placeholder="输入班级" class="border rounded px-2 py-1 mr-2">
+                        <input type="file" name="file" accept=".txt" class="border rounded px-2 py-1 mr-2">
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">上传</button>
+                    </form>
+                </div>
+                <div class="mb-4">
+                    <h3 class="text-xl font-bold mb-2">学生列表</h3>
+                    <input type="text" id="grade-filter" placeholder="输入年级" class="border rounded px-2 py-1 mr-2">
+                    <input type="text" id="class-filter" placeholder="输入班级" class="border rounded px-2 py-1 mr-2">
+                    <button id="filter-students" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">筛选</button>
+                    <ul id="student-list" class="bg-white rounded shadow p-4 mt-4">
+                        <!-- 学生列表将通过 JavaScript 动态填充 -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- File Management Section -->
+            <section id="file-management" class="hidden">
+                <h2 class="text-2xl font-bold mb-4">文件管理</h2>
+                <div class="bg-white rounded shadow p-4">
+                    <h3 class="text-xl font-bold mb-2">云存储</h3>
+                    <ul id="file-list" class="mb-4">
+                        <!-- 文件列表将通过 JavaScript 动态填充 -->
+                    </ul>
+                    <input type="file" id="file-upload" class="hidden">
+                    <label for="file-upload" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer">
+                        上传文件
+                    </label>
+                </div>
+            </section>
+
+            <!-- Word Match Section -->
+            <section id="word-match" class="hidden">
+                <h2 class="text-2xl font-bold mb-4">单词连连看文件管理</h2>
+                <div class="bg-white rounded shadow p-4">
+                    <ul id="word-match-list" class="mb-4">
+                        <!-- 单词文件列表将通过 JavaScript 动态填充 -->
+                    </ul>
+                    <input type="file" id="word-file-upload" accept=".json" class="hidden">
+                    <label for="word-file-upload" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
+                        上传新文件
+                    </label>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Navigation
+            $('nav a').on('click', function(e) {
+                e.preventDefault();
+                const section = $(this).data('section');
+                $('main section').hide();
+                $(`#${section}`).show();
+            });
+
+            // Show student management section by default
+            $('#student-management').show();
+
+            // 处理学生名单上传
+            $('#upload-students-form').on('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                $.ajax({
+                    url: '/upload_students',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            alert('学生名单上传成功');
+                            loadStudentList();
+                        } else {
+                            alert('上传失败: ' + response.error);
+                        }
+                    }
+                });
+            });
+
+            // 加载学生列表
+            function loadStudentList() {
+                const grade = $('#grade-filter').val();
+                const className = $('#class-filter').val();
+                if (grade && className) {
+                    $.get(`/get_student_list/${grade}/${className}`, function(students) {
+                        $('#student-list').empty();
+                        students.forEach(function(student) {
+                            $('#student-list').append(`
+                                <li class="flex justify-between items-center p-2 hover:bg-gray-100">
+                                    <span>${student}</span>
+                                    <a href="/student_progress/${grade}/${className}/${student}" class="text-blue-500 hover:text-blue-700">查看进度</a>
+                                </li>
+                            `);
+                        });
+                    });
+                }
+            }
+
+            // 筛选学生
+            $('#filter-students').on('click', loadStudentList);
+
+            // 文件上传
+            $('#file-upload').on('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    $.ajax({
+                        url: '/upload_file',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            if (response.success) {
+                                loadFileList();
+                            } else {
+                                alert('上传失败: ' + response.error);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // 加载文件列表
+            function loadFileList() {
+                $.get('/get_file_list', function(files) {
+                    $('#file-list').empty();
+                    files.forEach(function(file) {
+                        $('#file-list').append(`
+                            <li class="flex justify-between items-center p-2 hover:bg-gray-100">
+                                <span>${file}</span>
+                                <div>
+                                    <button class="text-blue-500 hover:text-blue-700 mr-2 download-file" data-file="${file}"><i class="fas fa-download"></i></button>
+                                    <button class="text-red-500 hover:text-red-700 delete-file" data-file="${file}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                        `);
+                    });
+                });
+            }
+
+            // 下载文件
+            $(document).on('click', '.download-file', function() {
+                const file = $(this).data('file');
+                window.location.href = `/download_file/${file}`;
+            });
+
+            // 删除文件
+            $(document).on('click', '.delete-file', function() {
+                const file = $(this).data('file');
+                if (confirm('确定要删除这个文件吗？')) {
+                    $.post('/delete_file', {filename: file}, function(response) {
+                        if (response.success) {
+                            loadFileList();
+                        } else {
+                            alert('删除失败: ' + response.error);
+                        }
+                    });
+                }
+            });
+
+            // 单词文件上传
+            $('#word-file-upload').on('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    $.ajax({
+                        url: '/upload_word_file',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            if (response.success) {
+                                loadWordFileList();
+                            } else {
+                                alert('上传失败: ' + response.error);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // 加载单词文件列表
+            function loadWordFileList() {
+                $.get('/get_word_file_list', function(files) {
+                    $('#word-match-list').empty();
+                    files.forEach(function(file) {
+                        $('#word-match-list').append(`
+                            <li class="flex justify-between items-center p-2 hover:bg-gray-100">
+                                <span>${file}</span>
+                                <div>
+                                    <button class="text-blue-500 hover:text-blue-700 mr-2 edit-word-file" data-file="${file}"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700 delete-word-file" data-file="${file}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </li>
+                        `);
+                    });
+                });
+            }
+
+            // 编辑单词文件
+            $(document).on('click', '.edit-word-file', function(e) {
+                e.preventDefault();
+                const file = $(this).data('file');
+                window.open(`/word_editor?filename=${file}`, '_blank');
+            });
+
+            // 删除单词文件
+            $(document).on('click', '.delete-word-file', function() {
+                const file = $(this).data('file');
+                if (confirm('确定要删除这个单词文件吗？')) {
+                    $.post('/delete_word_file', {filename: file}, function(response) {
+                        if (response.success) {
+                            loadWordFileList();
+                        } else {
+                            alert('删除失败: ' + response.error);
+                        }
+                    });
+                }
+            });
+
+            // 添加消息监听器
+            window.addEventListener('message', function(event) {
+                if (event.data === 'wordFileUpdated') {
+                    loadWordFileList();
+                }
+            }, false);
+
+            // 初始加载
+            loadFileList();
+            loadWordFileList();
+        });
+    </script>
+</body>
+</html>

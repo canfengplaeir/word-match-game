@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单词文件编辑器</title>
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"
+        type="application/javascript"></script>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/izitoast/1.4.0/js/iziToast.min.js"
+        type="application/javascript"></script>
+    <link href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/izitoast/1.4.0/css/iziToast.min.css" type="text/css"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='word_editor/style.css') }}">
+    <script src="{{ url_for('static', filename='word_editor/word_editor.js') }}" defer></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>单词文件编辑器 <span id="filename"></span></h1>
+
+        <!-- 添加登录和注册按钮 -->
+        <div id="authButtons">
+            <button id="loginBtn" onclick="window.location.href='/login'">登录</button>
+            <button id="registerBtn" onclick="window.location.href='/register'">注册</button>
+        </div>
+
+        <div class="info">
+            提示：中英文单词的位置顺序无严格要求，可以先中文后英文，也可以先英文后中文。
+            您可以选择多个单词进行批量删除。
+        </div>
+        <table id="wordTable">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes()"> 全选</th>
+                    <th>单词1</th>
+                    <th>单词2</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="wordTableBody">
+                <!-- 单词行将在这里动态添加 -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevPage" onclick="changePage(-1)">上一页</button>
+            <span id="pageInfo"></span>
+            <button id="nextPage" onclick="changePage(1)">下一页</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addRow()">添加新单词</button>
+            <button onclick="openBatchAddModal()">批量添加单词</button>
+            <button onclick="saveToServer()">保存到服务器</button>
+            <button onclick="saveJSON()">保存为 JSON（本地）</button>
+            <button onclick="saveTXT()">保存为 TXT（本地）</button>
+            <button id="loadFromServerBtn" onclick="loadFromServer()">从服务器加载</button>
+            <button onclick="loadFile()">加载本地文件</button>
+            <button class="batch-delete-btn" onclick="batchDelete()">批量删除</button>
+            <button onclick="loadLocalDictionaries()">加载本地词库</button>
+        </div>
+    </div>
+
+    <!-- 添加加载对话框 -->
+    <div id="loadDialog" title="从服务器加载文件" style="display:none;">
+        <select id="fileSelect">
+            <!-- 文件选项将通过 JavaScript 动态填充 -->
+        </select>
+    </div>
+
+    <div id="batchAddModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBatchAddModal()">&times;</span>
+            <h2>批量添加单词</h2>
+            <p>请按照以下格式输入单词：每两行为一组，第一行为英文，第二行为对应的中文翻译。</p>
+            <textarea id="batchInput" placeholder="例如：
+apple
+苹果
+banana
+香蕉
+orange
+橙子
+当然也可以反着来：
+苹果
+apple
+香蕉
+banana
+橙子
+orange"></textarea>
+            <button onclick="processBatchInput()">添加</button>
+        </div>
+    </div>
+   
+</body>
+
+</html>

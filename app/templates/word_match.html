@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>单词连连看</title>
+
+    <link href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqueryui/1.12.1/jquery-ui.css" type="text/css"
+        rel="stylesheet" />
+    <link href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/izitoast/1.4.0/css/iziToast.min.css" type="text/css"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='word_match/style.css') }}">
+
+</head>
+
+<body>
+    <div id="floatingWindowLeft">
+        <div class="content">
+            <div class="scoreboard">
+                <p>正确次数: <span id="correctLeft">0</span></p>
+                <p>错误次数: <span id="incorrectLeft">0</span></p>
+                <p>单词总数: <span id="totalLeft">0</span></p>
+            </div>
+            <button id="loadFileBtnLeft" class="floating-button">加载单词文件</button>
+            <button id="resetGameBtnLeft" class="floating-button">重置游戏</button>
+            <button id="editWordsBtnLeft" class="floating-button">编辑单词</button>
+        </div>
+    </div>
+
+    <div id="floatingWindowRight">
+        <div class="content">
+            <div class="scoreboard">
+                <p>正确次数: <span id="correctRight">0</span></p>
+                <p>错误次数: <span id="incorrectRight">0</span></p>
+                <p>单词总数: <span id="totalRight">0</span></p>
+            </div>
+            <button id="loadFileBtnRight" class="floating-button">加载单词文件</button>
+            <button id="resetGameBtnRight" class="floating-button">重置游戏</button>
+            <button id="editWordsBtnRight" class="floating-button">编辑单词</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="title-box" id="titleBox" style="display: flex;flex-direction: column;">
+            <h1>单词连连看</h1>
+        </div>
+        <div id="scoreboard">
+            <p>正确次数: <span id="correct">0</span></p>
+            <p>错误次数: <span id="incorrect">0</span></p>
+            <p>单词总数: <span id="total">0</span></p>
+        </div>
+        <div id="gameBoard"></div>
+        <div id="gameOver">
+            <h2 style="color: white;" class="victory">恭喜你，所有单词匹配完成！</h2>
+            <div id="scoreboardDisplay" style="display: none; text-align: center;
+            padding: 10px;
+            margin: 0 auto; /* 使用margin: 0 auto;实现水平居中 */
+            cursor: pointer;
+            position: relative;
+            width: fit-content;
+            font-size: large;
+            color: white;">
+                <!-- 计分板内容将在这里显示 -->
+            </div>
+            <button id="playAgainBtn" class="button">再玩一次</button>
+        </div>
+        <input type="file" id="fileInput" style="display: none;" />
+    </div>
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js" type="application/javascript"></script>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqueryui/1.12.1/jquery-ui.js"
+        type="application/javascript"></script>
+
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/izitoast/1.4.0/js/iziToast.min.js"
+        type="application/javascript"></script>
+    <script src="{{ url_for('static', filename='word_match/scripts.js') }}"></script>
+</body>
+
+</html>

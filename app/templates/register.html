@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师注册</title>
+    <!-- Tailwind CSS and DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-base-200 flex items-center justify-center min-h-screen">
+    <div class="card w-96 bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title justify-center mb-4">教师注册</h2>
+            <form id="teacherRegistrationForm" method="POST" action="">
+                {{ form.hidden_tag() }}
+                <div class="form-control">
+                    <label class="label" for="{{ form.username.id }}">
+                        <span class="label-text">姓名</span>
+                    </label>
+                    {{ form.username(class="input input-bordered", placeholder="请输入姓名") }}
+                    {% for error in form.username.errors %}
+                        <span class="text-error text-xs mt-1">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-4">
+                    <label class="label" for="{{ form.email.id }}">
+                        <span class="label-text">电子邮箱</span>
+                    </label>
+                    {{ form.email(class="input input-bordered", placeholder="请输入电子邮箱") }}
+                    {% for error in form.email.errors %}
+                        <span class="text-error text-xs mt-1">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-4">
+                    <label class="label" for="{{ form.password.id }}">
+                        <span class="label-text">密码</span>
+                    </label>
+                    {{ form.password(class="input input-bordered", placeholder="请输入密码") }}
+                    {% for error in form.password.errors %}
+                        <span class="text-error text-xs mt-1">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-4">
+                    <label class="label" for="{{ form.confirm_password.id }}">
+                        <span class="label-text">确认密码</span>
+                    </label>
+                    {{ form.confirm_password(class="input input-bordered", placeholder="请再次输入密码") }}
+                    {% for error in form.confirm_password.errors %}
+                        <span class="text-error text-xs mt-1">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-4">
+                    <label class="label" for="subject">
+                        <span class="label-text">教授科目</span>
+                    </label>
+                    <select id="subject" name="subject" class="select select-bordered w-full" required>
+                        <option value="" disabled selected>请选择科目</option>
+                        <option value="math">数学</option>
+                        <option value="science">科学</option>
+                        <option value="literature">语文</option>
+                        <option value="english">英语</option>
+                        <option value="history">历史</option>
+                    </select>
+                </div>
+                <div class="form-control mt-4">
+                    <label class="label" for="experience">
+                        <span class="label-text">教学经验（年）</span>
+                    </label>
+                    <input type="number" id="experience" name="experience" placeholder="请输入教学经验" class="input input-bordered" min="0" required />
+                </div>
+                <div class="form-control mt-4">
+                    <label class="label" for="{{ form.registration_key.id }}">
+                        <span class="label-text">注册密钥</span>
+                    </label>
+                    {{ form.registration_key(class="input input-bordered", placeholder="请输入注册密钥") }}
+                    {% for error in form.registration_key.errors %}
+                        <span class="text-error text-xs mt-1">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-control mt-6">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery Validation Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#teacherRegistrationForm").validate({
+                rules: {
+                    username: "required",
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    confirm_password: {
+                        required: true,
+                        equalTo: "#password"
+                    },
+                    subject: "required",
+                    experience: {
+                        required: true,
+                        number: true,
+                        min: 0
+                    },
+                    registration_key: "required"
+                },
+                messages: {
+                    username: "请输入您的姓名",
+                    email: {
+                        required: "请输入您的电子邮箱",
+                        email: "请输入有效的电子邮箱地址"
+                    },
+                    password: {
+                        required: "请输入密码",
+                        minlength: "密码长度至少为6个字符"
+                    },
+                    confirm_password: {
+                        required: "请确认密码",
+                        equalTo: "两次输入的密码不一致"
+                    },
+                    subject: "请选择您要教授的科目",
+                    experience: {
+                        required: "请输入您的教学经验",
+                        number: "请输入有效的数字",
+                        min: "教学经验不能为负数"
+                    },
+                    registration_key: "请输入注册密钥"
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('text-error text-xs mt-1');
+                    error.insertAfter(element);
+                },
+                highlight: function(element) {
+                    $(element).addClass('input-error');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('input-error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
